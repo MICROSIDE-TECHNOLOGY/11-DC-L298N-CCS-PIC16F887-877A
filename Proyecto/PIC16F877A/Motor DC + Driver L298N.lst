@@ -1,0 +1,394 @@
+CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 14:54
+
+               Filename:   E:\Martin Hdez\Desktop\CCS 16F\877A\Práctica 11\Motor DC + Driver L298N.lst
+
+               ROM used:   281 words (3%)
+                           Largest free fragment is 2048
+               RAM used:   10 (3%) at main() level
+                           11 (3%) worst case
+               Stack used: 1 locations
+               Stack size: 8
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   018
+0003:  NOP
+.................... /* 
+.................... AUTOR: MICROSIDE TECHNOLOGY S.A. DE C.V. 
+.................... FECHA: JUNIO 2019 
+.................... */ 
+....................  
+.................... /* 
+.................... --------------------------------------------------------------------------- 
+.................... Esta práctica consiste en variar la velocidad de un motor usando el módulo 
+.................... PWM. 
+.................... --------------------------------------------------------------------------- 
+.................... */ 
+....................  
+.................... #include <16F877A.h>                            //Incluye el microcontrolador con el que se va a trabajar  
+.................... //////////// Standard Header file for the PIC16F877A device //////////////// 
+.................... /////////////////////////////////////////////////////////////////////////// 
+.................... ////        (C) Copyright 1996, 2014 Custom Computer Services          //// 
+.................... //// This source code may only be used by licensed users of the CCS C  //// 
+.................... //// compiler.  This source code may only be distributed to other      //// 
+.................... //// licensed users of the CCS C compiler.  No other use, reproduction //// 
+.................... //// or distribution is permitted without written permission.          //// 
+.................... //// Derivative programs created using this software in object code    //// 
+.................... //// form are not restricted in any way.                               //// 
+.................... /////////////////////////////////////////////////////////////////////////// 
+.................... #device PIC16F877A 
+....................  
+.................... #list 
+....................  
+.................... #use delay(clock=20Mhz, crystal)                //Tipo de oscilador y frecuencia dependiendo del microcontrolador  
+0004:  MOVLW  25
+0005:  MOVWF  04
+0006:  BCF    03.7
+0007:  MOVF   00,W
+0008:  BTFSC  03.2
+0009:  GOTO   017
+000A:  MOVLW  06
+000B:  MOVWF  78
+000C:  CLRF   77
+000D:  DECFSZ 77,F
+000E:  GOTO   00D
+000F:  DECFSZ 78,F
+0010:  GOTO   00C
+0011:  MOVLW  7B
+0012:  MOVWF  77
+0013:  DECFSZ 77,F
+0014:  GOTO   013
+0015:  DECFSZ 00,F
+0016:  GOTO   00A
+0017:  RETURN
+....................  
+.................... #define IN_1 pin_C0 
+.................... #define IN_2 pin_C1 
+....................  
+.................... int16 VELOCIDAD=0;                              //Variable para ajustar el valor del PWM1 en CCP1 
+....................  
+.................... int1 SUBE=1;                                    //Variable para control de ascenso y descenso del valor del PWM 
+....................  
+.................... void main() 
+0018:  MOVF   03,W
+0019:  ANDLW  1F
+001A:  MOVWF  03
+001B:  CLRF   21
+001C:  CLRF   20
+001D:  BSF    22.0
+001E:  MOVLW  FF
+001F:  MOVWF  23
+0020:  BSF    03.5
+0021:  BSF    1F.0
+0022:  BSF    1F.1
+0023:  BSF    1F.2
+0024:  BCF    1F.3
+0025:  MOVLW  07
+0026:  MOVWF  1C
+0027:  BCF    03.7
+.................... { 
+....................       setup_timer_2 (T2_DIV_BY_16, 255, 1);                            //Configura Timer2, periodo ajustado a 342uS 
+0028:  MOVLW  00
+0029:  MOVWF  78
+002A:  IORLW  06
+002B:  BCF    03.5
+002C:  MOVWF  12
+002D:  MOVLW  FF
+002E:  BSF    03.5
+002F:  MOVWF  12
+....................       setup_ccp1 (CCP_PWM);        //Configura el módulo CCP para uso del PWM 
+0030:  BCF    03.5
+0031:  BCF    23.2
+0032:  MOVF   23,W
+0033:  BSF    03.5
+0034:  MOVWF  07
+0035:  BCF    03.5
+0036:  BCF    07.2
+0037:  MOVLW  0C
+0038:  MOVWF  17
+....................       while (TRUE) 
+....................             { 
+....................                 output_bit (IN_1, 1);                                  //Dirección del motor 
+0039:  BSF    07.0
+003A:  BCF    23.0
+003B:  MOVF   23,W
+003C:  BSF    03.5
+003D:  MOVWF  07
+....................                 output_bit (IN_2, 0) ; 
+003E:  BCF    03.5
+003F:  BCF    07.1
+0040:  BCF    23.1
+0041:  MOVF   23,W
+0042:  BSF    03.5
+0043:  MOVWF  07
+....................                 SUBE = 1; 
+0044:  BCF    03.5
+0045:  BSF    22.0
+....................  
+....................                  while (VELOCIDAD < 1020&&SUBE) 
+0046:  MOVF   21,W
+0047:  SUBLW  03
+0048:  BTFSS  03.0
+0049:  GOTO   06D
+004A:  BTFSS  03.2
+004B:  GOTO   050
+004C:  MOVF   20,W
+004D:  SUBLW  FB
+004E:  BTFSS  03.0
+004F:  GOTO   06D
+0050:  BTFSS  22.0
+0051:  GOTO   06D
+....................                        { 
+....................                                                                        //Se va incrementando del valor en el PWM hasta el máximo 
+....................                               VELOCIDAD += 5;                          //Se incrementa en pasos de 15 el ciclo de trabajo 
+0052:  MOVLW  05
+0053:  ADDWF  20,F
+0054:  BTFSC  03.0
+0055:  INCF   21,F
+....................                               set_pwm1_duty (VELOCIDAD);                
+0056:  MOVF   21,W
+0057:  MOVWF  79
+0058:  MOVF   20,W
+0059:  MOVWF  78
+005A:  RRF    79,F
+005B:  RRF    78,F
+005C:  RRF    79,F
+005D:  RRF    78,F
+005E:  RRF    79,F
+005F:  MOVF   78,W
+0060:  MOVWF  15
+0061:  RRF    79,F
+0062:  RRF    79,W
+0063:  ANDLW  30
+0064:  MOVWF  77
+0065:  MOVF   17,W
+0066:  ANDLW  CF
+0067:  IORWF  77,W
+0068:  MOVWF  17
+....................                               delay_ms (40);                           //retardo 
+0069:  MOVLW  28
+006A:  MOVWF  25
+006B:  CALL   004
+006C:  GOTO   046
+....................                         } 
+....................  
+....................                      SUBE = 0; 
+006D:  BCF    22.0
+....................  
+....................                  while (VELOCIDAD > 5&& ! SUBE) 
+006E:  MOVF   21,F
+006F:  BTFSS  03.2
+0070:  GOTO   075
+0071:  MOVF   20,W
+0072:  SUBLW  05
+0073:  BTFSC  03.0
+0074:  GOTO   094
+0075:  BTFSC  22.0
+0076:  GOTO   094
+....................                           { 
+....................                                                                         //Se va reduciendo el valor en el PWM hasta el mí­nimo 
+....................                                   VELOCIDAD -= 5;                       //Se reduce en pasos de 15 el ciclo de trabajo 
+0077:  MOVLW  05
+0078:  SUBWF  20,F
+0079:  MOVLW  00
+007A:  BTFSS  03.0
+007B:  MOVLW  01
+007C:  SUBWF  21,F
+....................                                   set_pwm1_duty (VELOCIDAD);             
+007D:  MOVF   21,W
+007E:  MOVWF  79
+007F:  MOVF   20,W
+0080:  MOVWF  78
+0081:  RRF    79,F
+0082:  RRF    78,F
+0083:  RRF    79,F
+0084:  RRF    78,F
+0085:  RRF    79,F
+0086:  MOVF   78,W
+0087:  MOVWF  15
+0088:  RRF    79,F
+0089:  RRF    79,W
+008A:  ANDLW  30
+008B:  MOVWF  77
+008C:  MOVF   17,W
+008D:  ANDLW  CF
+008E:  IORWF  77,W
+008F:  MOVWF  17
+....................                                   delay_ms (40) ; 
+0090:  MOVLW  28
+0091:  MOVWF  25
+0092:  CALL   004
+0093:  GOTO   06E
+....................                             } 
+....................  
+....................                             SUBE = 1; 
+0094:  BSF    22.0
+....................                             output_bit (IN_1, 0);                       //Alto del motor 
+0095:  BCF    07.0
+0096:  BCF    23.0
+0097:  MOVF   23,W
+0098:  BSF    03.5
+0099:  MOVWF  07
+....................                             output_bit (IN_2, 0); 
+009A:  BCF    03.5
+009B:  BCF    07.1
+009C:  BCF    23.1
+009D:  MOVF   23,W
+009E:  BSF    03.5
+009F:  MOVWF  07
+....................                             delay_ms (1000) ; 
+00A0:  MOVLW  04
+00A1:  BCF    03.5
+00A2:  MOVWF  24
+00A3:  MOVLW  FA
+00A4:  MOVWF  25
+00A5:  CALL   004
+00A6:  DECFSZ 24,F
+00A7:  GOTO   0A3
+....................  
+....................                            output_bit (IN_1, 0);                        //Dirección del motor 
+00A8:  BCF    07.0
+00A9:  BCF    23.0
+00AA:  MOVF   23,W
+00AB:  BSF    03.5
+00AC:  MOVWF  07
+....................                            output_bit (IN_2, 1) ; 
+00AD:  BCF    03.5
+00AE:  BSF    07.1
+00AF:  BCF    23.1
+00B0:  MOVF   23,W
+00B1:  BSF    03.5
+00B2:  MOVWF  07
+....................                             SUBE = 1; 
+00B3:  BCF    03.5
+00B4:  BSF    22.0
+....................  
+....................                     while (VELOCIDAD < 1020&&SUBE) 
+00B5:  MOVF   21,W
+00B6:  SUBLW  03
+00B7:  BTFSS  03.0
+00B8:  GOTO   0DC
+00B9:  BTFSS  03.2
+00BA:  GOTO   0BF
+00BB:  MOVF   20,W
+00BC:  SUBLW  FB
+00BD:  BTFSS  03.0
+00BE:  GOTO   0DC
+00BF:  BTFSS  22.0
+00C0:  GOTO   0DC
+....................                              { 
+....................                                                                          //Se va incrementando del valor en el PWM hasta el máximo 
+....................                                    VELOCIDAD += 5;                       //Se incrementa en pasos de 15 el ciclo de trabajo 
+00C1:  MOVLW  05
+00C2:  ADDWF  20,F
+00C3:  BTFSC  03.0
+00C4:  INCF   21,F
+....................                                    set_pwm1_duty (VELOCIDAD);             
+00C5:  MOVF   21,W
+00C6:  MOVWF  79
+00C7:  MOVF   20,W
+00C8:  MOVWF  78
+00C9:  RRF    79,F
+00CA:  RRF    78,F
+00CB:  RRF    79,F
+00CC:  RRF    78,F
+00CD:  RRF    79,F
+00CE:  MOVF   78,W
+00CF:  MOVWF  15
+00D0:  RRF    79,F
+00D1:  RRF    79,W
+00D2:  ANDLW  30
+00D3:  MOVWF  77
+00D4:  MOVF   17,W
+00D5:  ANDLW  CF
+00D6:  IORWF  77,W
+00D7:  MOVWF  17
+....................                                    delay_ms (40);                        
+00D8:  MOVLW  28
+00D9:  MOVWF  25
+00DA:  CALL   004
+00DB:  GOTO   0B5
+....................                               } 
+....................  
+....................                              SUBE = 0; 
+00DC:  BCF    22.0
+....................  
+....................                       while (VELOCIDAD > 5&& ! SUBE) 
+00DD:  MOVF   21,F
+00DE:  BTFSS  03.2
+00DF:  GOTO   0E4
+00E0:  MOVF   20,W
+00E1:  SUBLW  05
+00E2:  BTFSC  03.0
+00E3:  GOTO   103
+00E4:  BTFSC  22.0
+00E5:  GOTO   103
+....................                                { 
+....................                                                                          //Se va reduciendo el valor en el PWM hasta el mínimo 
+....................                                      VELOCIDAD -= 5;                     //Se reduce en pasos de 15 el ciclo de trabajo 
+00E6:  MOVLW  05
+00E7:  SUBWF  20,F
+00E8:  MOVLW  00
+00E9:  BTFSS  03.0
+00EA:  MOVLW  01
+00EB:  SUBWF  21,F
+....................                                      set_pwm1_duty (VELOCIDAD);           
+00EC:  MOVF   21,W
+00ED:  MOVWF  79
+00EE:  MOVF   20,W
+00EF:  MOVWF  78
+00F0:  RRF    79,F
+00F1:  RRF    78,F
+00F2:  RRF    79,F
+00F3:  RRF    78,F
+00F4:  RRF    79,F
+00F5:  MOVF   78,W
+00F6:  MOVWF  15
+00F7:  RRF    79,F
+00F8:  RRF    79,W
+00F9:  ANDLW  30
+00FA:  MOVWF  77
+00FB:  MOVF   17,W
+00FC:  ANDLW  CF
+00FD:  IORWF  77,W
+00FE:  MOVWF  17
+....................                                      delay_ms (40) ; 
+00FF:  MOVLW  28
+0100:  MOVWF  25
+0101:  CALL   004
+0102:  GOTO   0DD
+....................                                 } 
+....................  
+....................                           SUBE = 1; 
+0103:  BSF    22.0
+....................                           output_bit (IN_1, 0);                          //Alto del motor 
+0104:  BCF    07.0
+0105:  BCF    23.0
+0106:  MOVF   23,W
+0107:  BSF    03.5
+0108:  MOVWF  07
+....................                           output_bit (IN_2, 0); 
+0109:  BCF    03.5
+010A:  BCF    07.1
+010B:  BCF    23.1
+010C:  MOVF   23,W
+010D:  BSF    03.5
+010E:  MOVWF  07
+....................  
+....................                           delay_ms (500) ; 
+010F:  MOVLW  02
+0110:  BCF    03.5
+0111:  MOVWF  24
+0112:  MOVLW  FA
+0113:  MOVWF  25
+0114:  CALL   004
+0115:  DECFSZ 24,F
+0116:  GOTO   112
+0117:  GOTO   039
+....................             } 
+.................... } 
+0118:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F72   HS NOWDT PUT BROWNOUT NOLVP NOCPD NOWRT NODEBUG NOPROTECT

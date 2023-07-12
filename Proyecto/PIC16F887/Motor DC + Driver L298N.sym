@@ -1,0 +1,64 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+004-005 @WRITE_PROGRAM_MEMORY8.P2
+015     CCP_1_LOW
+015     CCP_1
+016     CCP_1_HIGH
+01B     CCP_2
+01B     CCP_2_LOW
+01C     CCP_2_HIGH
+020-021 VELOCIDAD
+022.0   SUBE
+023     @TRIS_C
+024     main.@SCRATCH1
+025     @delay_ms1.P1
+077     @SCRATCH
+078     @SCRATCH
+078     _RETURN_
+079     @SCRATCH
+07A     @SCRATCH
+107.6   C1OUT
+108.6   C2OUT
+10D-10E @WRITE_PROGRAM_MEMORY8.P1
+10D-10E @READ_PROGRAM_MEMORY8.P2
+
+ROM Allocation:
+000004  @delay_ms1
+000018  @cinit1
+000018  main
+00002F  @cinit2
+
+Project Directory:
+    E:\Martin Hdez\Desktop\CCS 16F\887\Práctica 11\
+
+Project Files:
+    Motor DC + Driver L298N.c                               [24-feb.-22 14:52  CRC=5CBBE58D]
+    ..\..\..\..\..\Program Files\PICC\Devices\16F887.h      [15-ene.-18 15:53  CRC=9C71CB72]
+
+Source signature=959F7C71
+Program memory checksum=0000
+Program memory CRC=0000
+Hex file CRC=C826
+
+Units:
+    Motor DC + Driver L298N (main)
+
+Compiler Settings:
+    Processor:      PIC16F887
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+    Compile Mode:       CCS5
+
+Output Files:
+    XREF file:   Motor DC + Driver L298N.xsym
+    Errors:      Motor DC + Driver L298N.err
+    Ext Symbols: Motor DC + Driver L298N.esym
+    INHX8:       Motor DC + Driver L298N.hex
+    Symbols:     Motor DC + Driver L298N.sym
+    List:        Motor DC + Driver L298N.lst
+    Debug/COFF:  Motor DC + Driver L298N.cof
+    Project:     Motor DC + Driver L298N.ccspjt
+    Call Tree:   Motor DC + Driver L298N.tre
+    Statistics:  Motor DC + Driver L298N.STA

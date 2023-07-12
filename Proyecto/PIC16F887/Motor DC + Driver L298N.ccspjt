@@ -1,0 +1,24 @@
+[PROJECT]
+Target=Motor DC + Driver L298N.hex
+Processor_Text=PIC16F887
+CCSVersion=5.076
+Compiler=PCM
+[Target Data]
+FileList=Motor DC + Driver L298N.c
+[Motor DC + Driver L298N.c]
+Type=4
+[mru-list]
+1=Motor DC + Driver L298N.c
+[Units]
+Count=1
+1=Motor DC + Driver L298N (main)
+
+[defines]
+buildcount=1
+
+[ProjectLog]
+Days=1
+D1=24-02-2022
+D1_L=2
+D1_L1=[53655]Started Editing.
+D1_L2=[53666]Project Closed.
