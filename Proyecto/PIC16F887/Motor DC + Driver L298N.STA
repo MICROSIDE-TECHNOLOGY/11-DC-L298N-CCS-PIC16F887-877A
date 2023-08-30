@@ -13,28 +13,28 @@ Stack size: 8
 
 Lines Stmts  %   Files
 ----- ----- ---  -----
-   85    40 100  Motor DC + Driver L298N.c
-  786     0   0  ..\..\..\..\..\Program Files\PICC\Devices\16F887.h
+   80    40 100  Motor DC + Driver L298N.c
+  810     0   0  ..\..\..\..\..\..\..\..\..\..\Program Files (x86)\PICCDEMO\Devices\16F887.h
 ----- -----
-  871    40 Total
+  890    40 Total
 
 Page ROM  %  RAM    Vol Diff  Functions:
 ---- --- --- ---    --- ----  ----------
 0     20   7    1             @delay_ms1
-0    271  92    1   1222  6.4  main
- Inline         0    328  2.7  @cinit1
+0    271  92    1   1232  6.4  main
+ Inline         0             @cinit1
 
 Program metrics:
-    Functions               2
+    Functions               1
     Statements              40
-    Comments                172
-    Volume (V)              1758
-    Difficulty (D)          9.0
-    Effort to implement (E) 15842
-    Time to implement (T)   15 minutes
+    Comments                182
+    Volume (V)              1237
+    Difficulty (D)          6.2
+    Effort to implement (E) 7683
+    Time to implement (T)   7 minutes
     Est Delivered Bugs (B)  0
     Cyclomatic Complexity   1
-    Maintainability (MI)    136
+    Maintainability (MI)    118
 
  Segment     Used  Free
 -----------  ----  ----

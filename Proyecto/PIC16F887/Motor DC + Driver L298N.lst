@@ -1,6 +1,8 @@
-CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 14:52
+CCS PCM C Compiler, Version 5.115d, 1               30-ago.-23 09:22
+Compiler operating in Evaluation Mode
+To obtain a fully enabled compiler visit www.ccsinfo.com/products
 
-               Filename:   E:\Martin Hdez\Desktop\CCS 16F\887\Práctica 11\Motor DC + Driver L298N.lst
+               Filename:   C:\Users\victo\OneDrive\Documentos\X-TRAINER-hands-on\CCS\PIC16F\11-DC-L298N-CCS-PIC16F887-877A\Proyecto\PIC16F887\Motor DC + Driver L298N.lst
 
                ROM used:   295 words (4%)
                            Largest free fragment is 2048
@@ -14,34 +16,39 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 14:52
 0001:  MOVWF  0A
 0002:  GOTO   018
 0003:  NOP
-.................... /* 
-.................... AUTOR: MICROSIDE TECHNOLOGY S.A. DE C.V. 
-.................... FECHA: JUNIO 2019 
-.................... */ 
-....................  
-.................... /* 
-.................... --------------------------------------------------------------------------- 
-.................... Esta práctica consiste en variar la velocidad de un motor usando el módulo 
-.................... PWM. 
-.................... --------------------------------------------------------------------------- 
-.................... */ 
-....................  
-.................... #include <16F887.h>                            //Incluye el microcontrolador con el que se va a trabajar  
-.................... //////////// Standard Header file for the PIC16F887 device //////////////// 
-.................... /////////////////////////////////////////////////////////////////////////// 
-.................... ////        (C) Copyright 1996, 2014 Custom Computer Services          //// 
-.................... //// This source code may only be used by licensed users of the CCS C  //// 
-.................... //// compiler.  This source code may only be distributed to other      //// 
-.................... //// licensed users of the CCS C compiler.  No other use, reproduction //// 
-.................... //// or distribution is permitted without written permission.          //// 
-.................... //// Derivative programs created using this software in object code    //// 
-.................... //// form are not restricted in any way.                               //// 
-.................... /////////////////////////////////////////////////////////////////////////// 
-.................... #device PIC16F887 
-....................  
-.................... #list 
-....................  
-.................... #use delay(clock=20Mhz, crystal)                //Tipo de oscilador y frecuencia dependiendo del microcontrolador  
+.................... /************************************************************************************************
+.................... Company:
+.................... Microside Technology Inc.
+.................... File Name:
+.................... Motor DC + Driver L298N.c
+.................... Product Revision  :  1
+.................... Device            :  X-TRAINER
+.................... Driver Version    :  1.0
+.................... ************************************************************************************************/
+.................... 
+.................... /*
+.................... ---------------------------------------------------------------------------
+.................... Esta práctica consiste en variar la velocidad de un motor usando el módulo
+.................... PWM.
+.................... ---------------------------------------------------------------------------
+.................... */
+.................... 
+.................... #include <16F887.h>                        //Incluye el microcontrolador con el que se va a trabajar
+.................... //////////// Standard Header file for the PIC16F887 device ////////////////
+.................... ///////////////////////////////////////////////////////////////////////////
+.................... ////        (C) Copyright 1996, 2020 Custom Computer Services          ////
+.................... //// This source code may only be used by licensed users of the CCS C  ////
+.................... //// compiler.  This source code may only be distributed to other      ////
+.................... //// licensed users of the CCS C compiler.  No other use, reproduction ////
+.................... //// or distribution is permitted without written permission.          ////
+.................... //// Derivative programs created using this software in object code    ////
+.................... //// form are not restricted in any way.                               ////
+.................... ///////////////////////////////////////////////////////////////////////////
+.................... #device PIC16F887
+.................... 
+.................... #list
+.................... 
+.................... #use delay( clock = 20Mhz, crystal )       // Tipo de oscilador y frecuencia dependiendo del microcontrolador 
 0004:  MOVLW  25
 0005:  MOVWF  04
 0006:  BCF    03.7
@@ -62,15 +69,15 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 14:52
 0015:  DECFSZ 00,F
 0016:  GOTO   00A
 0017:  RETURN
-....................  
-.................... #define IN_1 pin_C0 
-.................... #define IN_2 pin_C1 
-....................  
-.................... int16 VELOCIDAD=0;                              //Variable para ajustar el valor del PWM1 en CCP1 
-....................  
-.................... int1 SUBE=1;                                    //Variable para control de ascenso y descenso del valor del PWM 
-....................  
-.................... void main() 
+.................... 
+.................... #define IN_1 pin_C0
+.................... #define IN_2 pin_C1
+.................... 
+.................... int16 VELOCIDAD = 0;                       // Variable para ajustar el valor del PWM1 en CCP1
+.................... 
+.................... int1 SUBE = 1;                             // Variable para control de ascenso y descenso del valor del PWM
+.................... 
+.................... void main ( void ) {
 0018:  MOVF   03,W
 0019:  ANDLW  1F
 001A:  MOVWF  03
@@ -95,8 +102,7 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 14:52
 002D:  CLRF   08
 002E:  CLRF   09
 002F:  BCF    03.7
-.................... { 
-....................       setup_timer_2 (T2_DIV_BY_16, 255, 1);                            //Configura Timer2, periodo ajustado a 342uS 
+....................    setup_timer_2( T2_DIV_BY_16, 255, 1 );  // Configura Timer2, periodo ajustado a 342uS
 0030:  MOVLW  00
 0031:  MOVWF  78
 0032:  IORLW  06
@@ -105,7 +111,7 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 14:52
 0035:  MOVLW  FF
 0036:  BSF    03.5
 0037:  MOVWF  12
-....................       setup_ccp1 (CCP_PWM|CCP_SHUTDOWN_AC_L|CCP_SHUTDOWN_BD_L);        //Configura el módulo CCP para uso del PWM 
+....................    setup_ccp1( CCP_PWM | CCP_SHUTDOWN_AC_L | CCP_SHUTDOWN_BD_L ); // Configura el módulo CCP para uso del PWM
 0038:  BCF    03.5
 0039:  BCF    23.2
 003A:  MOVF   23,W
@@ -120,27 +126,26 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 14:52
 0043:  CLRF   1C
 0044:  MOVLW  01
 0045:  MOVWF  1D
-....................       while (TRUE) 
-....................             { 
-....................                 output_bit (IN_1, 1);                                  //Dirección del motor 
+....................    while ( 1 ) {
+....................       output_bit( IN_1, 1 );                // Dirección del motor
 0046:  BCF    03.5
 0047:  BSF    07.0
 0048:  BCF    23.0
 0049:  MOVF   23,W
 004A:  BSF    03.5
 004B:  MOVWF  07
-....................                 output_bit (IN_2, 0) ; 
+....................       output_bit( IN_2, 0 );
 004C:  BCF    03.5
 004D:  BCF    07.1
 004E:  BCF    23.1
 004F:  MOVF   23,W
 0050:  BSF    03.5
 0051:  MOVWF  07
-....................                 SUBE = 1; 
+....................       SUBE = 1;
 0052:  BCF    03.5
 0053:  BSF    22.0
-....................  
-....................                  while (VELOCIDAD < 1020&&SUBE) 
+.................... 
+....................       while ( VELOCIDAD < 1020 && SUBE ) {  // Se va incrementando del valor en el PWM hasta el máximo
 0054:  MOVF   21,W
 0055:  SUBLW  03
 0056:  BTFSS  03.0
@@ -153,14 +158,12 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 14:52
 005D:  GOTO   07B
 005E:  BTFSS  22.0
 005F:  GOTO   07B
-....................                        { 
-....................                                                                        //Se va incrementando del valor en el PWM hasta el máximo 
-....................                               VELOCIDAD += 5;                          //Se incrementa en pasos de 15 el ciclo de trabajo 
+....................          VELOCIDAD += 5;                    // Se incrementa en pasos de 15 el ciclo de trabajo
 0060:  MOVLW  05
 0061:  ADDWF  20,F
 0062:  BTFSC  03.0
 0063:  INCF   21,F
-....................                               set_pwm1_duty (VELOCIDAD);                
+....................          set_pwm1_duty( VELOCIDAD );
 0064:  MOVF   21,W
 0065:  MOVWF  79
 0066:  MOVF   20,W
@@ -180,17 +183,17 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 14:52
 0074:  ANDLW  CF
 0075:  IORWF  77,W
 0076:  MOVWF  17
-....................                               delay_ms (40);                           //retardo 
+....................          delay_ms( 40 ); // retardo
 0077:  MOVLW  28
 0078:  MOVWF  25
 0079:  CALL   004
 007A:  GOTO   054
-....................                         } 
-....................  
-....................                      SUBE = 0; 
+....................       }
+.................... 
+....................       SUBE = 0;
 007B:  BCF    22.0
-....................  
-....................                  while (VELOCIDAD > 5&& ! SUBE) 
+.................... 
+....................       while ( VELOCIDAD > 5 && !SUBE ) {   // Se va reduciendo el valor en el PWM hasta el mí­nimo
 007C:  MOVF   21,F
 007D:  BTFSS  03.2
 007E:  GOTO   083
@@ -200,16 +203,14 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 14:52
 0082:  GOTO   0A2
 0083:  BTFSC  22.0
 0084:  GOTO   0A2
-....................                           { 
-....................                                                                         //Se va reduciendo el valor en el PWM hasta el mí­nimo 
-....................                                   VELOCIDAD -= 5;                       //Se reduce en pasos de 15 el ciclo de trabajo 
+....................          VELOCIDAD -= 5;                   // Se reduce en pasos de 15 el ciclo de trabajo
 0085:  MOVLW  05
 0086:  SUBWF  20,F
 0087:  MOVLW  00
 0088:  BTFSS  03.0
 0089:  MOVLW  01
 008A:  SUBWF  21,F
-....................                                   set_pwm1_duty (VELOCIDAD);             
+....................          set_pwm1_duty( VELOCIDAD );
 008B:  MOVF   21,W
 008C:  MOVWF  79
 008D:  MOVF   20,W
@@ -229,29 +230,29 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 14:52
 009B:  ANDLW  CF
 009C:  IORWF  77,W
 009D:  MOVWF  17
-....................                                   delay_ms (40) ; 
+....................          delay_ms( 40 );
 009E:  MOVLW  28
 009F:  MOVWF  25
 00A0:  CALL   004
 00A1:  GOTO   07C
-....................                             } 
-....................  
-....................                             SUBE = 1; 
+....................       }
+.................... 
+....................       SUBE = 1;
 00A2:  BSF    22.0
-....................                             output_bit (IN_1, 0);                       //Alto del motor 
+....................       output_bit( IN_1, 0 );               // Alto del motor
 00A3:  BCF    07.0
 00A4:  BCF    23.0
 00A5:  MOVF   23,W
 00A6:  BSF    03.5
 00A7:  MOVWF  07
-....................                             output_bit (IN_2, 0); 
+....................       output_bit( IN_2, 0 );
 00A8:  BCF    03.5
 00A9:  BCF    07.1
 00AA:  BCF    23.1
 00AB:  MOVF   23,W
 00AC:  BSF    03.5
 00AD:  MOVWF  07
-....................                             delay_ms (1000) ; 
+....................       delay_ms( 1000 );
 00AE:  MOVLW  04
 00AF:  BCF    03.5
 00B0:  MOVWF  24
@@ -260,25 +261,25 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 14:52
 00B3:  CALL   004
 00B4:  DECFSZ 24,F
 00B5:  GOTO   0B1
-....................  
-....................                            output_bit (IN_1, 0);                        //Dirección del motor 
+.................... 
+....................       output_bit( IN_1, 0 );               // Dirección del motor
 00B6:  BCF    07.0
 00B7:  BCF    23.0
 00B8:  MOVF   23,W
 00B9:  BSF    03.5
 00BA:  MOVWF  07
-....................                            output_bit (IN_2, 1) ; 
+....................       output_bit( IN_2, 1 );
 00BB:  BCF    03.5
 00BC:  BSF    07.1
 00BD:  BCF    23.1
 00BE:  MOVF   23,W
 00BF:  BSF    03.5
 00C0:  MOVWF  07
-....................                             SUBE = 1; 
+....................       SUBE = 1;
 00C1:  BCF    03.5
 00C2:  BSF    22.0
-....................  
-....................                     while (VELOCIDAD < 1020&&SUBE) 
+.................... 
+....................       while ( VELOCIDAD < 1020 && SUBE ) { // Se va incrementando del valor en el PWM hasta el máximo
 00C3:  MOVF   21,W
 00C4:  SUBLW  03
 00C5:  BTFSS  03.0
@@ -291,14 +292,12 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 14:52
 00CC:  GOTO   0EA
 00CD:  BTFSS  22.0
 00CE:  GOTO   0EA
-....................                              { 
-....................                                                                          //Se va incrementando del valor en el PWM hasta el máximo 
-....................                                    VELOCIDAD += 5;                       //Se incrementa en pasos de 15 el ciclo de trabajo 
+....................          VELOCIDAD += 5;                   // Se incrementa en pasos de 15 el ciclo de trabajo
 00CF:  MOVLW  05
 00D0:  ADDWF  20,F
 00D1:  BTFSC  03.0
 00D2:  INCF   21,F
-....................                                    set_pwm1_duty (VELOCIDAD);             
+....................          set_pwm1_duty( VELOCIDAD );
 00D3:  MOVF   21,W
 00D4:  MOVWF  79
 00D5:  MOVF   20,W
@@ -318,17 +317,17 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 14:52
 00E3:  ANDLW  CF
 00E4:  IORWF  77,W
 00E5:  MOVWF  17
-....................                                    delay_ms (40);                        
+....................          delay_ms( 40 );
 00E6:  MOVLW  28
 00E7:  MOVWF  25
 00E8:  CALL   004
 00E9:  GOTO   0C3
-....................                               } 
-....................  
-....................                              SUBE = 0; 
+....................       }
+.................... 
+....................       SUBE = 0;
 00EA:  BCF    22.0
-....................  
-....................                       while (VELOCIDAD > 5&& ! SUBE) 
+.................... 
+....................       while ( VELOCIDAD > 5 && !SUBE ) {  // Se va reduciendo el valor en el PWM hasta el mínimo
 00EB:  MOVF   21,F
 00EC:  BTFSS  03.2
 00ED:  GOTO   0F2
@@ -338,16 +337,14 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 14:52
 00F1:  GOTO   111
 00F2:  BTFSC  22.0
 00F3:  GOTO   111
-....................                                { 
-....................                                                                          //Se va reduciendo el valor en el PWM hasta el mínimo 
-....................                                      VELOCIDAD -= 5;                     //Se reduce en pasos de 15 el ciclo de trabajo 
+....................          VELOCIDAD -= 5;                  // Se reduce en pasos de 15 el ciclo de trabajo
 00F4:  MOVLW  05
 00F5:  SUBWF  20,F
 00F6:  MOVLW  00
 00F7:  BTFSS  03.0
 00F8:  MOVLW  01
 00F9:  SUBWF  21,F
-....................                                      set_pwm1_duty (VELOCIDAD);           
+....................          set_pwm1_duty( VELOCIDAD );
 00FA:  MOVF   21,W
 00FB:  MOVWF  79
 00FC:  MOVF   20,W
@@ -367,30 +364,30 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 14:52
 010A:  ANDLW  CF
 010B:  IORWF  77,W
 010C:  MOVWF  17
-....................                                      delay_ms (40) ; 
+....................          delay_ms( 40 );
 010D:  MOVLW  28
 010E:  MOVWF  25
 010F:  CALL   004
 0110:  GOTO   0EB
-....................                                 } 
-....................  
-....................                           SUBE = 1; 
+....................       }
+.................... 
+....................       SUBE = 1;
 0111:  BSF    22.0
-....................                           output_bit (IN_1, 0);                          //Alto del motor 
+....................       output_bit( IN_1, 0 );              // Alto del motor
 0112:  BCF    07.0
 0113:  BCF    23.0
 0114:  MOVF   23,W
 0115:  BSF    03.5
 0116:  MOVWF  07
-....................                           output_bit (IN_2, 0); 
+....................       output_bit( IN_2, 0 );
 0117:  BCF    03.5
 0118:  BCF    07.1
 0119:  BCF    23.1
 011A:  MOVF   23,W
 011B:  BSF    03.5
 011C:  MOVWF  07
-....................  
-....................                           delay_ms (500) ; 
+.................... 
+....................       delay_ms( 500 );
 011D:  MOVLW  02
 011E:  BCF    03.5
 011F:  MOVWF  24
@@ -400,8 +397,8 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 14:52
 0123:  DECFSZ 24,F
 0124:  GOTO   120
 0125:  GOTO   047
-....................             } 
-.................... } 
+....................    }
+.................... }
 0126:  SLEEP
 
 Configuration Fuses:
